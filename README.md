@@ -9,6 +9,10 @@ parallelism, loop parallelism, actor parallelism, bulk synchronization,
 point-to-point synchronization, and isolation. PCDP is built on top of the Java
 Fork-Join framework, but offers more convenient APIs.
 
+Javadocs for PCDP can be accessed at:
+
+[https://habanero-rice.github.io/PCDP/](https://habanero-rice.github.io/PCDP/)
+
 =============================================
 User Installation
 =============================================
