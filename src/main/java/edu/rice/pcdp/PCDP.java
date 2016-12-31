@@ -194,7 +194,7 @@ public final class PCDP {
             final int iCopy = i;
 
             async(() -> {
-                int end = iCopy + chunkSize;
+                int end = iCopy + chunkSize - 1;
                 if (end > endInclusive) {
                     end = endInclusive;
                 }
@@ -248,7 +248,7 @@ public final class PCDP {
             int outer = i / innerNIters;
             int inner = i % innerNIters;
 
-            body.apply(outer, inner);
+            body.apply(start0 + outer, start1 + inner);
         });
     }
 
