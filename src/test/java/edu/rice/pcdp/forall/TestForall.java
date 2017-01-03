@@ -1,4 +1,4 @@
-package edu.rice.pcdp.async;
+package edu.rice.pcdp.forall;
 
 import org.junit.After;
 import org.junit.Test;
