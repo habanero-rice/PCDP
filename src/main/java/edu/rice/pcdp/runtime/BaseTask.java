@@ -13,13 +13,18 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Shams Imam (shams@rice.edu)
  * @author Max Grossman (jmg3@rice.edu)
  */
-public abstract class BaseTask extends CountedCompleter<Void> {
+public abstract class BaseTask extends CountedCompleter<Void> implements Runnable {
 
     /**
      * Default constructor.
      */
     public BaseTask() {
         super();
+    }
+
+    @Override
+    public void run() {
+    	this.compute();
     }
 
     /**
@@ -82,7 +87,7 @@ public abstract class BaseTask extends CountedCompleter<Void> {
             } finally {
                 tryComplete();
                 Runtime.popTask();
-                awaitCompletion();
+                //awaitCompletion();
             }
         }
 
@@ -233,7 +238,7 @@ public abstract class BaseTask extends CountedCompleter<Void> {
                 Runtime.popTask();
             }
         }
-
+       
         @Override
         public FinishTask ief() {
             return immediatelyEnclosingFinish;

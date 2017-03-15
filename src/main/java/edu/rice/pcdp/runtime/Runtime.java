@@ -4,6 +4,7 @@ import edu.rice.pcdp.config.Configuration;
 import edu.rice.pcdp.config.SystemProperty;
 
 import java.util.Stack;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +34,7 @@ public final class Runtime {
     /**
      * The thread pool backing this instance of Runtime.
      */
-    private static ForkJoinPool taskPool = new ForkJoinPool(
+    private static ExecutorService taskPool = new ForkJoinPool(
             Configuration.readIntProperty(SystemProperty.numWorkers));
 
     /**
@@ -53,6 +54,14 @@ public final class Runtime {
 
         SystemProperty.numWorkers.set(numWorkers);
         taskPool = new ForkJoinPool(numWorkers);
+    }
+    
+    public static void setExecutorService( ExecutorService executorService ) throws InterruptedException {
+        taskPool.shutdown();
+        boolean terminated = taskPool.awaitTermination(10, TimeUnit.SECONDS);
+        assert (terminated);
+
+        taskPool = executorService;
     }
 
     /**
