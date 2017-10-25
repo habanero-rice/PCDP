@@ -146,4 +146,16 @@ public class TestForall {
         }
     }
 
+    @Test
+    public void testNumberOfIterations() {
+        final int N = 2;
+        AtomicInteger numberOfEnters = new AtomicInteger(0);
+
+        forall2dChunked(0, N - 1, 0, N - 1, (i, j) -> {
+            numberOfEnters.incrementAndGet();
+            /*code*/
+        });
+        // System.err.println("=== " + (N * N) + " " + numberOfEnters.get());
+        assertEquals(N * N, numberOfEnters.get());
+    }
 }
