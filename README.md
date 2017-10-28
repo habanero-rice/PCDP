@@ -1,6 +1,6 @@
-=============================================
+==========
 PCDP
-=============================================
+==========
 
 PCDP is a shared-memory, pedagogical, parallel programming framework. PCDP's
 design, implementation, and APIs emphasize simplicity to make it straightforward
