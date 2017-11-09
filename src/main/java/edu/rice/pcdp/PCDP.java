@@ -64,7 +64,8 @@ public final class PCDP {
      */
     public static void async(final Runnable runnable) {
         final FutureTask<Void> newTask = createFutureTask(runnable);
-        newTask.fork();
+        //newTask.fork();
+        Runtime.submitTask(newTask);
     }
 
     /**
