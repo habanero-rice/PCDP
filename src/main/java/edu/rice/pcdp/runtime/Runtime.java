@@ -3,7 +3,8 @@ package edu.rice.pcdp.runtime;
 import edu.rice.pcdp.config.Configuration;
 import edu.rice.pcdp.config.SystemProperty;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
@@ -22,11 +23,11 @@ public final class Runtime {
     /**
      * For each thread, a stack listing the tasks executing on this thread.
      */
-    private static final ThreadLocal<Stack<BaseTask>> threadLocalTaskStack =
-        new ThreadLocal<Stack<BaseTask>>() {
+    private static final ThreadLocal<Deque<BaseTask>> threadLocalTaskStack =
+        new ThreadLocal<Deque<BaseTask>>() {
             @Override
-            protected Stack<BaseTask> initialValue() {
-                return new Stack<>();
+            protected Deque<BaseTask> initialValue() {
+                return new ArrayDeque<>();
             }
         };
 
@@ -60,7 +61,7 @@ public final class Runtime {
      * @return Currently executing task.
      */
     public static BaseTask currentTask() {
-        final Stack<BaseTask> taskStack = Runtime.threadLocalTaskStack.get();
+        final Deque<BaseTask> taskStack = Runtime.threadLocalTaskStack.get();
         if (taskStack.isEmpty()) {
             return null;
         } else {
