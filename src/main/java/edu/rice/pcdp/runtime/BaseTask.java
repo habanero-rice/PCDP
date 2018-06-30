@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CountedCompleter;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -46,11 +45,6 @@ public abstract class BaseTask extends CountedCompleter<Void> {
         private final Runnable runnable;
 
         /**
-         * Count down latch to wait on for completion of this finish scope.
-         */
-        private final CountDownLatch countDownLatch;
-
-        /**
          * The Exception list is used to collect exceptions issued when tasks
          * associated with this finish scope terminate abruptly. This field is
          * initialized lazily.
@@ -65,7 +59,6 @@ public abstract class BaseTask extends CountedCompleter<Void> {
         public FinishTask(final Runnable setRunnable) {
             super();
             this.runnable = setRunnable;
-            this.countDownLatch = new CountDownLatch(1);
             this.exceptionList = null;
             TASK_COUNTER.incrementAndGet();
         }
@@ -86,18 +79,13 @@ public abstract class BaseTask extends CountedCompleter<Void> {
             }
         }
 
-        @Override
-        public void onCompletion(final CountedCompleter<?> caller) {
-            countDownLatch.countDown();
-        }
-
         /**
          * Wait for all tasks registered on this finish scope to complete.
          */
         public void awaitCompletion() {
             try {
-                countDownLatch.await();
-            } catch (final InterruptedException ex) {
+                join();
+            } catch (final Exception ex) {
                 pushException(ex);
             }
 
