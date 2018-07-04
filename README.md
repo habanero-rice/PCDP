@@ -1,4 +1,3 @@
-==========
 PCDP
 ==========
 
@@ -13,7 +12,6 @@ Javadocs for PCDP can be accessed at:
 
 [https://habanero-rice.github.io/PCDP/](https://habanero-rice.github.io/PCDP/)
 
-=============================================
 User Installation
 =============================================
 
@@ -45,7 +43,6 @@ pom.xml:
     </dependencies>
 
 
-=============================================
 Developer Installation
 =============================================
 
