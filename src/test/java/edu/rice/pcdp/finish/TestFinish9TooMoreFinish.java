@@ -7,6 +7,7 @@ import org.junit.runners.JUnit4;
 
 import static edu.rice.pcdp.PCDP.async;
 import static edu.rice.pcdp.PCDP.finish;
+import static org.junit.Assert.assertEquals;
 
 /**
  * There are no  dead lock and blocked workers
@@ -31,6 +32,29 @@ public class TestFinish9TooMoreFinish {
         }
     }
 
+    /**
+     * In this case we have recursive computation tree
+     * where each layer of recursion waiting for end of
+     * all async task in the layer.
+     *
+     * finish {
+     *      task{}
+     * }
+     *
+     * where task is:
+     *      finish {
+     *        \  \______
+     *        \__       async{task}
+     *            async{task}
+     *      }
+     *
+     * thus quantity of finish statements would be 2^n-1
+     * where n - is depth of recursion.
+     *
+     * If the sum of finish statements be greater then
+     * quantity of workers(by default = available processors)
+     * we will expect missing of dead lock.
+     */
     @Test
     public void nestedFinishTest() {
         final int dataLength = Runtime.getRuntime().availableProcessors() * 2;
@@ -46,6 +70,8 @@ public class TestFinish9TooMoreFinish {
             seqResult += ARRAY[i];
         }
         System.out.printf("Sequencial result is: %d", seqResult);
+
+        assertEquals(parResult[0], seqResult);
     }
 
     private int sum(final int dataLength,

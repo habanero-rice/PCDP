@@ -84,6 +84,10 @@ public abstract class BaseTask extends CountedCompleter<Void> {
          */
         public void awaitCompletion() {
             try {
+                // Wait for end of computations registered on
+                // this finish scope.
+                // Moreover join allow us to handle exceptions
+                // while computing the runnable
                 join();
             } catch (final Exception ex) {
                 pushException(ex);
